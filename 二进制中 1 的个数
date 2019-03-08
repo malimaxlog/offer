@@ -15,3 +15,10 @@ public class Solution {
         return count;
     }
 }
+
+
+
+法二：Integer.bitCount()
+public int NumberOf1(int n) {
+    return Integer.bitCount(n);
+}
