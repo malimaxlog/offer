@@ -1,1 +1,42 @@
+我们知道，前序遍历的第一个节点就是树的根节点，所以我们先根据前序遍历序列的第一个数字创建根结点，接下来在中序遍历序列中找到根结点的位置，
+根节点的左边就是左子树，右边就是右子树，这样就能确定左、右子树结点的数量。在前序遍历和中序遍历的序列中划分了左、右子树结点的值之后，
+就可以递归地去分别构建它的左右子树。
 
+
+/**
+    首先明确根节点就是pre[presta]  前序遍历数组第一个哦
+    算法思路就是先找到中序遍历里面找到根节点对应的索引i
+    就可以确定根节点左子树，右子树的前序遍历第一个  中序遍历第一个 中序遍历最后一个
+    当中序遍历第一个>中序遍历最后一个 返回Null
+ *
+/
+public class Solution {
+    public TreeNode reConstructBinaryTree(int [] pre,int [] in) {
+         
+        if(pre==null||in==null ||pre.length!=in.length) return null;
+         
+        return construct(pre,in,0,0,in.length-1);
+         
+         
+    }
+     
+    private TreeNode construct(int[] pre,int[] in,int presta,int insta,int inend)
+    {
+        if(insta>inend) return null;
+         
+        TreeNode root=new TreeNode(pre[presta]);
+        for(int i=insta;i<=inend;i++)
+        {
+            if(pre[presta]==in[i])
+            {
+                root.left=construct(pre,in,presta+1,insta,i-1);
+                root.right=construct(pre,in,presta+i-insta+1,i+1,inend);
+                break;
+            }
+        }
+         
+        return root;
+         
+    }
+     
+}
