@@ -1,0 +1,62 @@
+给定一个m x n个元素的矩阵(m行，n列)，按螺旋顺序返回矩阵的所有元素。
+
+法一：
+数组有R行和C列。
+seen[r][c]表示之前访问过第r行和第c列上的单元格。我们现在的位置是(row, col)面向di方向，我们想访问R x C总单元格。
+当我们在矩阵中移动时，下一个候选位置是(rNum, cNum),如果候选项在矩阵的界限内且不可见，那么它就是我们的下一个位置;
+否则，我们的下一个位置就是顺时针旋转后的位置。通过rowArr和colArr进行旋转。
+int[] rowArr = {0,1,0,-1};
+int[] colArr = {1,0,-1,0};
+
+class Solution {
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> result = new ArrayList<>();
+        if(matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return result;
+        }
+        int m = matrix.length,n = matrix[0].length;
+        boolean[][] seen = new boolean[m][n];
+        int row = 0,col = 0,di = 0;
+        int[] rowArr = {0,1,0,-1};
+        int[] colArr = {1,0,-1,0};
+        for(int i=0; i<m*n;i++) {
+            result.add(matrix[row][col]);
+            seen[row][col] = true;
+            int rNum = row + rowArr[di];
+            int cNum = col + colArr[di];
+            if(rNum>=0 && rNum<m && cNum>=0 && cNum<n && !seen[rNum][cNum]) {
+                row = rNum;
+                col = cNum;
+            } else {
+                di = (di + 1)%4;
+                row += rowArr[di];
+                col += colArr[di];
+            }
+        }
+        return result;
+    }
+}
+
+法二：
+class Solution {
+    public List < Integer > spiralOrder(int[][] matrix) {
+        List ans = new ArrayList();
+        if (matrix.length == 0)
+            return ans;
+        int r1 = 0, r2 = matrix.length - 1;
+        int c1 = 0, c2 = matrix[0].length - 1;
+        while (r1 <= r2 && c1 <= c2) {
+            for (int c = c1; c <= c2; c++) ans.add(matrix[r1][c]);
+            for (int r = r1 + 1; r <= r2; r++) ans.add(matrix[r][c2]);
+            if (r1 < r2 && c1 < c2) {
+                for (int c = c2 - 1; c > c1; c--) ans.add(matrix[r2][c]);
+                for (int r = r2; r > r1; r--) ans.add(matrix[r][c1]);
+            }
+            r1++;
+            r2--;
+            c1++;
+            c2--;
+        }
+        return ans;
+    }
+}
